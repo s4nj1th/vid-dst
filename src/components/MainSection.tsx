@@ -5,6 +5,14 @@ import { MdLink, MdMonitor, MdCheckCircle, MdClose } from "react-icons/md";
 
 type MediaType = "movie" | "series";
 type IdType = "imdb" | "tmdb" | null;
+type HistoryEntry = {
+  url: string;
+  mediaType: "movie" | "series";
+  season?: number;
+  episode?: number;
+  timestamp: number;
+};
+
 
 export default function InputPlace() {
   const [mediaType, setMediaType] = useState<MediaType>("movie");
@@ -259,12 +267,19 @@ export default function InputPlace() {
   );
 }
 
-const saveToHistory = (entry: { url: string; mediaType: MediaType; season?: number; episode?: number }) => {
-  const history = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+const saveToHistory = (entry: {
+  url: string;
+  mediaType: MediaType;
+  season?: number;
+  episode?: number;
+}) => {
+  const history: HistoryEntry[] = JSON.parse(
+    localStorage.getItem("watchHistory") || "[]"
+  );
 
-  const exists = history.find((item: any) => item.url === entry.url);
+  const exists = history.find((item) => item.url === entry.url);
   if (!exists) {
-    const updated = [
+    const updated: HistoryEntry[] = [
       { ...entry, timestamp: Date.now() },
       ...history,
     ].slice(0, 100);
