@@ -1,4 +1,6 @@
-# Video Destination
+<div align="center">
+<h1>Video Destination</h1>
+</div>
 
 ## Overview
 
