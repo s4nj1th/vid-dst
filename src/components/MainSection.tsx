@@ -157,7 +157,7 @@ export default function InputPlace() {
             {url && (
               <button
                 onClick={() => setUrl("")}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition"
+                className="cursor-pointer absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition"
               >
                 <MdClose className="text-lg" />
               </button>
