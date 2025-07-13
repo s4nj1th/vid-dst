@@ -1,4 +1,4 @@
-import InputPlace from "@/components/InputPlace";
+import MainPart from "@/components/MainPart";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,12 +8,12 @@ export default function Home() {
         <Image
           src="/favicon.ico"
           alt="Logo"
-          width={64}
-          height={64}
+          width={72}
+          height={72}
         />
         <h1 className="text-4xl font-bold text-center my-8">VidDst</h1>
       </div>
-      <InputPlace />
+      <MainPart />
     </>
   );
 }
