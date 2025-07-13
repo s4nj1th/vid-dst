@@ -24,7 +24,7 @@ export default function HistoryPage() {
 useEffect(() => {
   const stored = localStorage.getItem("watchHistory");
   if (stored) {
-    const parsed: HistoryEntry[] = JSON.parse(stored).map((entry: any) => ({
+    const parsed: HistoryEntry[] = JSON.parse(stored).map((entry: HistoryEntry) => ({
       ...entry,
       timestamp: typeof entry.timestamp === "number"
         ? entry.timestamp

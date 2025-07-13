@@ -123,7 +123,7 @@ export default function InputPlace() {
       episode: mediaType === "series" ? (episode || 1) : undefined,
     });
   }
-}, [embedUrl]);
+}, [embedUrl, url, mediaType, season, episode]);
 
 
   return (
