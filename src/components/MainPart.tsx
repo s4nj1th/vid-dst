@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, ChangeEvent } from "react";
-import { MdLink, MdMonitor, MdCheckCircle } from "react-icons/md";
+import { MdLink, MdMonitor, MdCheckCircle, MdClose } from "react-icons/md";
 
 type MediaType = "movie" | "series";
 type IdType = "imdb" | "tmdb" | null;
@@ -80,7 +80,7 @@ export default function InputPlace() {
       setShowToast(true);
       setTimeout(() => {
         setShowToast(false);
-        setTimeout(() => setCopySuccess(""), 300); // wait for fade-out
+        setTimeout(() => setCopySuccess(""), 300);
       }, 2000);
     });
   };
@@ -118,7 +118,7 @@ export default function InputPlace() {
     <div className="flex flex-col gap-6 items-center max-w-5xl m-auto p-6 min-h-screen text-white relative z-10">
       {!theatreMode && (
         <>
-          <div className="flex gap-4 transition-all duration-300 ease-in-out">
+          <div className="flex gap-4">
             {(["movie", "series"] as const).map((type) => (
               <button
                 key={type}
@@ -126,7 +126,7 @@ export default function InputPlace() {
                 className={`px-4 py-2 rounded border transition-all duration-300 ease-in-out cursor-pointer ${
                   mediaType === type
                     ? "bg-white text-black hover:bg-[#f1f1f1] border-white font-black"
-                    : "bg-transparent text-white hover:bg-[#222e] border-[#eeec]"
+                    : "bg-transparent text-white hover:bg-[#222e] border-[#111]"
                 }`}
               >
                 {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -165,72 +165,79 @@ export default function InputPlace() {
             </div>
           )}
 
-          <input
-            type="url"
-            placeholder="Enter IMDb or TMDB URL"
-            value={url}
-            onChange={handleUrlChange}
-            className="w-full max-w-sm bg-[#111] text-white border border-[#181818] rounded px-4 py-2 outline-none transition-all duration-300"
-          />
+          <div className="relative w-full max-w-sm">
+            <input
+              type="url"
+              placeholder="Enter IMDb or TMDB URL"
+              value={url}
+              onChange={handleUrlChange}
+              className="w-full bg-[#111] text-white border border-[#181818] rounded px-4 py-2 outline-none transition-all duration-300 pr-10"
+            />
+            {url && (
+              <button
+                onClick={() => setUrl("")}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition"
+              >
+                <MdClose className="text-lg" />
+              </button>
+            )}
+          </div>
         </>
       )}
 
       {embedUrl && (
         <>
           <div
-            className={`fixed inset-0 z-50 bg-black flex items-center justify-center transition-all duration-500 ease-in-out ${
+            className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
+              theatreMode ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+            }`}
+            onClick={() => setTheatreMode(false)}
+          />
+
+          <div
+            ref={playerRef}
+            className={`${
               theatreMode
-                ? "opacity-100 scale-100 pointer-events-auto"
-                : "opacity-0 scale-95 pointer-events-none"
+                ? "fixed z-50 left-0 top-[50%] translate-y-[-50%] w-screen aspect-video transition-opacity duration-300"
+                : "relative w-full max-w-3xl mt-10 aspect-video border border-[#111] p-4 rounded"
             }`}
           >
-            <div ref={playerRef} className="w-full max-w-6xl aspect-video">
-              <iframe
-                src={embedUrl}
-                allowFullScreen
-                className="w-full h-full"
-              />
-            </div>
+            <iframe
+              key={`embed-${embedUrl}`}
+              src={embedUrl}
+              allowFullScreen
+              className="w-full h-full shadow-lg shadow-[#0008] "
+            />
           </div>
 
           {!theatreMode && (
-            <>
-              <div className="w-full max-w-3xl aspect-video mt-4 transition-all duration-500 ease-in-out">
-                <iframe
-                  src={embedUrl}
-                  allowFullScreen
-                  className="w-full h-full p-4 border border-[#111] rounded"
-                />
-              </div>
+            <div className="flex gap-0">
+              <button
+                onClick={handleCopy}
+                className="cursor-pointer px-4 py-2 bg-[#111] rounded-l-md border border-[#181818] hover:bg-[#222] items-center"
+              >
+                <MdLink className="text-xl" />
+              </button>
+              <button
+                onClick={() => setTheatreMode(true)}
+                className="cursor-pointer px-4 py-2 bg-[#111] rounded-r-md border border-[#181818] hover:bg-[#222] items-center"
+              >
+                <MdMonitor className="text-xl" />
+              </button>
+            </div>
+          )}
 
-              <div className="flex gap-0 mt-4">
-                <button
-                  onClick={handleCopy}
-                  className="relative px-4 py-2 bg-[#111] rounded-l-md cursor-pointer border border-[#181818] font-medium transition-all duration-300 ease-in-out flex items-center gap-2"
-                >
-                  <MdLink className="text-xl" />
-                </button>
-
-                <button
-                  onClick={() => setTheatreMode(true)}
-                  className="px-4 py-2 bg-[#111] rounded-r-md border transition-all duration-300 ease-in-out cursor-pointer text-white hover:bg-[#222] border-[#181818] flex items-center gap-2"
-                >
-                  <MdMonitor className="text-xl" />
-                </button>
-              </div>
-
-              {/* Toast */}
-              {copySuccess && (
-                <div
-                  className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg flex items-center gap-2 z-[100] transition-all duration-300 ease-out
-                    ${showToast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
-                  `}
-                >
-                  <MdCheckCircle className="text-xl" />
-                  <span>{copySuccess}</span>
-                </div>
-              )}
-            </>
+          {copySuccess && (
+            <div
+              className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg flex items-center gap-2 z-[100] transition-all duration-300 ${
+                showToast
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4 pointer-events-none"
+              }`}
+            >
+              <MdCheckCircle className="text-xl" />
+              <span>{copySuccess}</span>
+            </div>
           )}
         </>
       )}
