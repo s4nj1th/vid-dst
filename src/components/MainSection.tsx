@@ -114,6 +114,18 @@ export default function InputPlace() {
     };
   }, [theatreMode]);
 
+  useEffect(() => {
+  if (embedUrl) {
+    saveToHistory({
+      url,
+      mediaType,
+      season: mediaType === "series" ? (season || 1) : undefined,
+      episode: mediaType === "series" ? (episode || 1) : undefined,
+    });
+  }
+}, [embedUrl]);
+
+
   return (
     <div className="flex flex-col gap-6 items-center max-w-5xl m-auto p-6 min-h-screen text-white relative z-10">
       {!theatreMode && (
@@ -132,6 +144,24 @@ export default function InputPlace() {
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </button>
             ))}
+          </div>
+
+          <div className="relative w-full max-w-sm">
+            <input
+              type="url"
+              placeholder="Enter IMDb or TMDB URL"
+              value={url}
+              onChange={handleUrlChange}
+              className="w-full bg-[#111] text-white border border-[#181818] rounded px-4 py-2 outline-none transition-all duration-300 pr-10"
+            />
+            {url && (
+              <button
+                onClick={() => setUrl("")}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition"
+              >
+                <MdClose className="text-lg" />
+              </button>
+            )}
           </div>
 
           {mediaType === "series" && (
@@ -164,24 +194,6 @@ export default function InputPlace() {
               </div>
             </div>
           )}
-
-          <div className="relative w-full max-w-sm">
-            <input
-              type="url"
-              placeholder="Enter IMDb or TMDB URL"
-              value={url}
-              onChange={handleUrlChange}
-              className="w-full bg-[#111] text-white border border-[#181818] rounded px-4 py-2 outline-none transition-all duration-300 pr-10"
-            />
-            {url && (
-              <button
-                onClick={() => setUrl("")}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 transition"
-              >
-                <MdClose className="text-lg" />
-              </button>
-            )}
-          </div>
         </>
       )}
 
@@ -189,7 +201,9 @@ export default function InputPlace() {
         <>
           <div
             className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
-              theatreMode ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              theatreMode
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
             onClick={() => setTheatreMode(false)}
           />
@@ -244,3 +258,17 @@ export default function InputPlace() {
     </div>
   );
 }
+
+const saveToHistory = (entry: { url: string; mediaType: MediaType; season?: number; episode?: number }) => {
+  const history = JSON.parse(localStorage.getItem("watchHistory") || "[]");
+
+  const exists = history.find((item: any) => item.url === entry.url);
+  if (!exists) {
+    const updated = [
+      { ...entry, timestamp: Date.now() },
+      ...history,
+    ].slice(0, 100);
+    localStorage.setItem("watchHistory", JSON.stringify(updated));
+  }
+};
+
