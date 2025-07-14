@@ -13,7 +13,6 @@ type HistoryEntry = {
   timestamp: number;
 };
 
-
 export default function InputPlace() {
   const [mediaType, setMediaType] = useState<MediaType>("movie");
   const [season, setSeason] = useState<number | "">("");
@@ -123,16 +122,15 @@ export default function InputPlace() {
   }, [theatreMode]);
 
   useEffect(() => {
-  if (embedUrl) {
-    saveToHistory({
-      url,
-      mediaType,
-      season: mediaType === "series" ? (season || 1) : undefined,
-      episode: mediaType === "series" ? (episode || 1) : undefined,
-    });
-  }
-}, [embedUrl, url, mediaType, season, episode]);
-
+    if (embedUrl) {
+      saveToHistory({
+        url,
+        mediaType,
+        season: mediaType === "series" ? season || 1 : undefined,
+        episode: mediaType === "series" ? episode || 1 : undefined,
+      });
+    }
+  }, [embedUrl, url, mediaType, season, episode]);
 
   return (
     <div className="flex flex-col gap-6 items-center max-w-5xl m-auto p-6 min-h-screen text-white relative z-10">
@@ -205,7 +203,7 @@ export default function InputPlace() {
         </>
       )}
 
-      {embedUrl && (
+      {embedUrl ? (
         <>
           <div
             className={`fixed inset-0 bg-black transition-opacity duration-300 z-40 ${
@@ -228,7 +226,7 @@ export default function InputPlace() {
               key={`embed-${embedUrl}`}
               src={embedUrl}
               allowFullScreen
-              className="w-full h-full shadow-lg shadow-[#0008] "
+              className="w-full h-full shadow-lg shadow-[#0008]"
             />
           </div>
 
@@ -262,6 +260,15 @@ export default function InputPlace() {
             </div>
           )}
         </>
+      ) : (
+        <div
+          ref={playerRef}
+          className="relative w-full max-w-3xl mt-10 aspect-video border border-[#111] p-4 rounded"
+        >
+          <div className="w-full h-full bg-black flex items-center justify-center text-[#888] text-sm">
+            {"<"} your {mediaType} here {">"}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -286,4 +293,3 @@ const saveToHistory = (entry: {
     localStorage.setItem("watchHistory", JSON.stringify(updated));
   }
 };
-
