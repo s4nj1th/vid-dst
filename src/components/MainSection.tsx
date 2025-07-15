@@ -139,7 +139,7 @@ export default function MainSection() {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative z-10 md:mt-20 -mt-20">
+      <div className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative md:mt-20 -mt-20">
         <div className="w-full max-w-[300px] md:mx-0 mx-auto md:my-4 space-y-4">
           <div className="flex gap-4 justify-center md:justify-end">
             {(["movie", "series"] as const).map((type) => (
@@ -233,7 +233,7 @@ export default function MainSection() {
                 />
               ) : (
                 <div className="w-full h-full bg-black flex items-center justify-center text-[#888] text-md relative overflow-hidden shadow-lg shadow-[#0008]">
-                  <div className="relative z-10 text-center">
+                  <div className="relative text-center">
                     No {mediaType} loaded. Tune in with a link.
                     <Link
                       href="/how-to"
