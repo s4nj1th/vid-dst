@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { IoMdClipboard } from "react-icons/io";
 import { MdLink, MdMonitor, MdCheckCircle, MdClose } from "react-icons/md";
 
