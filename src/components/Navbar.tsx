@@ -7,7 +7,7 @@ export default function Navbar() {
     <nav className="bg-[#111] text-white border-b border-[#181818]">
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4 h-20">
         <Link href="/" className="flex items-center gap-4">
-          <Image src="/favicon.ico" alt="Logo" width={48} height={48} />
+          <Image src="/favicon.svg" alt="Logo" width={64} height={64} />
           <h1 className="text-2xl font-bold">VidDst</h1>
         </Link>
 

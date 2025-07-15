@@ -240,7 +240,7 @@ export default function InputPlace() {
               className="w-full h-full aspect-video shadow-lg shadow-[#0008]"
             />
           ) : (
-            <div className="w-full h-full bg-black flex items-center justify-center text-[#888] text-md relative overflow-hidden">
+            <div className="w-full h-full bg-black flex items-center justify-center text-[#888] text-md relative overflow-hidden shadow-lg shadow-[#0008]">
               <div className="relative z-10 text-center">
                 No {mediaType} loaded. Tune in with a link.
                 <Link

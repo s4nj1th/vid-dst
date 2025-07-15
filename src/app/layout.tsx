@@ -14,6 +14,11 @@ const atkSans = Atkinson_Hyperlegible({
 export const metadata: Metadata = {
   title: "VidDst",
   description: "A Web App for Video Distribution",
+  icons: {
+    icon: "/favicon-32x32.png",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
