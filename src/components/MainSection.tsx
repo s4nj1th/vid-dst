@@ -111,7 +111,8 @@ export default function MainSection() {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         playerRef.current &&
-        !playerRef.current.contains(event.target as Node)
+        !playerRef.current.contains(event.target as Node) &&
+        embedUrl != null
       ) {
         setTheatreMode(false);
       }
@@ -131,13 +132,23 @@ export default function MainSection() {
     }
   }, [embedUrl, url, mediaType, season, episode]);
 
-  // Clean up copy success message after fade-out
   useEffect(() => {
     if (!showToast && copySuccess) {
-      const timeout = setTimeout(() => setCopySuccess(""), 500); // match animation duration
+      const timeout = setTimeout(() => setCopySuccess(""), 500);
       return () => clearTimeout(timeout);
     }
   }, [showToast, copySuccess]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.key === "t" || e.key === "T") && embedUrl != null) {
+        setTheatreMode((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <div className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative z-10 md:mt-20 -mt-20">
@@ -225,9 +236,9 @@ export default function MainSection() {
       <div className="flex flex-col gap-4 w-full md:max-w-3xl">
         <div
           ref={playerRef}
-          className={`relative w-full aspect-video border border-[#111] p-4 rounded ${
+          className={`relative w-full aspect-video border border-[#111] p-4 rounded transition-all duration-300 ${
             theatreMode
-              ? "fixed top-1/2 left-0 transform -translate-y-1/2 z-50 w-screen"
+              ? "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 max-w-[90vw] w-full"
               : ""
           }`}
         >
@@ -255,16 +266,16 @@ export default function MainSection() {
         </div>
 
         {!theatreMode && embedUrl && (
-          <div className="flex gap-0">
+          <div className="flex gap-0 justify-center">
             <button
               onClick={handleCopy}
-              className="px-4 py-2 bg-[#111] border border-[#181818] rounded-l-md hover:bg-[#222]"
+              className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-l-md hover:bg-[#222]"
             >
               <MdLink className="text-xl" />
             </button>
             <button
               onClick={() => setTheatreMode(true)}
-              className="px-4 py-2 bg-[#111] border border-[#181818] rounded-r-md hover:bg-[#222]"
+              className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-r-md hover:bg-[#222]"
             >
               <MdMonitor className="text-xl" />
             </button>
@@ -272,17 +283,22 @@ export default function MainSection() {
         )}
       </div>
 
-      {theatreMode && (
+      {embedUrl && (
         <div
-          className="fixed inset-0 bg-black opacity-100 z-40"
-          onClick={() => setTheatreMode(false)}
+          className={`fixed inset-0 z-40 bg-black transition-opacity duration-300 ${
+            theatreMode ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
         />
       )}
 
       {copySuccess && (
         <div
           className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg flex items-center gap-2 z-[100] transition-all duration-500
-            ${showToast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
+            ${
+              showToast
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4 pointer-events-none"
+            }
             bg-green-600 text-white`}
         >
           <MdCheckCircle className="text-xl" />
