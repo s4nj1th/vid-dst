@@ -15,7 +15,7 @@ type HistoryEntry = {
   timestamp: number;
 };
 
-export default function InputPlace() {
+export default function MainSection() {
   const [mediaType, setMediaType] = useState<MediaType>("movie");
   const [season, setSeason] = useState<number | "">("");
   const [episode, setEpisode] = useState<number | "">("");
@@ -38,8 +38,6 @@ export default function InputPlace() {
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
   };
-
-  type IdType = "imdb" | "tmdb" | null;
 
   const extractIdFromUrl = (inputUrl: string): { id: string; type: IdType } => {
     try {
@@ -93,10 +91,7 @@ export default function InputPlace() {
     navigator.clipboard.writeText(embedUrl).then(() => {
       setCopySuccess("Copied!");
       setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        setTimeout(() => setCopySuccess(""), 300);
-      }, 2000);
+      setTimeout(() => setShowToast(false), 2000);
     });
   };
 
@@ -113,7 +108,6 @@ export default function InputPlace() {
 
   useEffect(() => {
     if (!theatreMode) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         playerRef.current &&
@@ -122,11 +116,8 @@ export default function InputPlace() {
         setTheatreMode(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [theatreMode]);
 
   useEffect(() => {
@@ -139,6 +130,14 @@ export default function InputPlace() {
       });
     }
   }, [embedUrl, url, mediaType, season, episode]);
+
+  // Clean up copy success message after fade-out
+  useEffect(() => {
+    if (!showToast && copySuccess) {
+      const timeout = setTimeout(() => setCopySuccess(""), 500); // match animation duration
+      return () => clearTimeout(timeout);
+    }
+  }, [showToast, copySuccess]);
 
   return (
     <div className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative z-10 md:mt-20 -mt-20">
@@ -159,7 +158,7 @@ export default function InputPlace() {
           ))}
         </div>
 
-        <div className="relative w-[100%] max-w-lg">
+        <div className="relative w-full max-w-lg">
           <input
             type="url"
             placeholder="Enter IMDb or TMDB URL"
@@ -281,9 +280,13 @@ export default function InputPlace() {
       )}
 
       {copySuccess && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg flex items-center gap-2 z-[100]">
+        <div
+          className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg flex items-center gap-2 z-[100] transition-all duration-500
+            ${showToast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
+            bg-green-600 text-white`}
+        >
           <MdCheckCircle className="text-xl" />
-          <span>Copied!</span>
+          <span>{copySuccess}</span>
         </div>
       )}
     </div>
