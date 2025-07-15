@@ -14,7 +14,7 @@ export default function Navbar() {
         <div className="flex items-center gap-x-4 text-sm">
           <Link
             href="/history"
-            className="hover:text-white transition-all text-gray-300 py-6 px-4 rounded-md flex items-center justify-center"
+            className="hover:text-white transition-all text-gray-300 rounded-lg flex items-center gap-2 justify-center min-w-20 min-h-20"
           >
             <MdHistory size={24} />
           </Link>
