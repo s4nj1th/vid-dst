@@ -6,15 +6,15 @@ export default function Navbar() {
   return (
     <nav className="bg-[#111] text-white border-b border-[#181818]">
       <div className="max-w-6xl mx-auto flex justify-between items-center px-6 py-4 h-20">
-        <Link href="/" className="flex items-center gap-4">
+        <Link href="/" className="flex items-center gap-4 min-w-44 px-4">
           <Image src="/favicon.svg" alt="Logo" width={64} height={64} />
           <h1 className="text-2xl font-bold">VidDst</h1>
         </Link>
 
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-center gap-x-4 text-sm">
           <Link
             href="/history"
-            className="hover:text-white transition-all text-gray-300"
+            className="hover:text-white transition-all text-gray-300 py-6 px-4 rounded-md flex items-center justify-center"
           >
             <MdHistory size={24} />
           </Link>
