@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { MdCheckCircle, MdOutlineWarning } from "react-icons/md";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 interface HistoryEntry {
   url: string;
@@ -44,9 +42,7 @@ useEffect(() => {
       : history.filter((item) => item.mediaType === selectedType);
 
   return (
-    <>
-      <Navbar />
-      <div className="max-w-3xl mx-auto p-6 text-white min-h-screen">
+      <main className="max-w-3xl mx-auto p-6 text-white min-h-screen">
         <div className="flex gap-4 mb-6">
           {(["all", "movie", "series"] as const).map((type) => (
             <button
@@ -64,7 +60,7 @@ useEffect(() => {
         </div>
 
         {filteredHistory.length === 0 ? (
-          <p className="text-[#888]">No history available.</p>
+          <p className="text-[#888] text-center mt-10">No history available.</p>
         ) : (
           <>
             <ul className="space-y-4">
@@ -126,10 +122,7 @@ useEffect(() => {
             <span>{copySuccess}</span>
           </div>
         )}
-      </div>
-
-      <Footer />
-    </>
+      </main>
   );
 }
 
