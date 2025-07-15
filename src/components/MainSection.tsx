@@ -148,7 +148,7 @@ export default function MainSection() {
                 onClick={() => setMediaType(type)}
                 className={`px-4 py-2 rounded border transition-all duration-300 cursor-pointer ${
                   mediaType === type
-                    ? "bg-white text-black font-black border-white"
+                    ? "bg-white hover:bg-[#f1f1f1] text-black font-black border-white"
                     : "bg-transparent text-white border-[#111] hover:bg-[#222e]"
                 }`}
               >
