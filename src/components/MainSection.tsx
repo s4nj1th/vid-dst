@@ -139,9 +139,9 @@ export default function MainSection() {
 
   return (
     <>
-      <div className="flex flex-col-reverse lg:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative lg:mt-20 -mt-20">
-        <div className="w-full max-w-[300px] lg:mx-0 mx-auto lg:my-4 space-y-4">
-          <div className="flex gap-4 justify-center lg:justify-end">
+      <div className="flex flex-col-reverse xl:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative xl:mt-20 -mt-20">
+        <div className="w-full max-w-[300px] xl:mx-0 mx-auto xl:my-4 space-y-4">
+          <div className="flex gap-4 justify-center xl:justify-end">
             {(["movie", "series"] as const).map((type) => (
               <button
                 key={type}
@@ -221,7 +221,7 @@ export default function MainSection() {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 w-full lg:max-w-3xl">
+        <div className="flex flex-col gap-4 w-full max-w-5xl mx-auto xl:mx-0">
           {!theatreMode && (
             <div className="relative w-full aspect-video border border-[#111] p-4 rounded transition-all duration-300">
               {embedUrl ? (
