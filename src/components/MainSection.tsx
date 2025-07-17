@@ -139,9 +139,9 @@ export default function MainSection() {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative md:mt-20 -mt-20">
-        <div className="w-full max-w-[300px] md:mx-0 mx-auto md:my-4 space-y-4">
-          <div className="flex gap-4 justify-center md:justify-end">
+      <div className="flex flex-col-reverse lg:flex-row items-start justify-center gap-10 p-6 min-h-screen text-white w-full relative lg:mt-20 -mt-20">
+        <div className="w-full max-w-[300px] lg:mx-0 mx-auto lg:my-4 space-y-4">
+          <div className="flex gap-4 justify-center lg:justify-end">
             {(["movie", "series"] as const).map((type) => (
               <button
                 key={type}
@@ -221,7 +221,7 @@ export default function MainSection() {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 w-full md:max-w-3xl">
+        <div className="flex flex-col gap-4 w-full lg:max-w-3xl">
           {!theatreMode && (
             <div className="relative w-full aspect-video border border-[#111] p-4 rounded transition-all duration-300">
               {embedUrl ? (
@@ -252,13 +252,13 @@ export default function MainSection() {
             <div className="flex gap-0 justify-center">
               <button
                 onClick={handleCopy}
-                className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-md md:rounded-r-0 hover:bg-[#222]"
+                className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-l-lg hover:bg-[#222]"
               >
                 <MdLink className="text-xl" />
               </button>
               <button
                 onClick={() => setTheatreMode(true)}
-                className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-r-md hover:bg-[#222]"
+                className="cursor-pointer px-4 py-2 bg-[#111] border border-[#181818] rounded-r-lg hover:bg-[#222]"
               >
                 <MdMonitor className="text-xl" />
               </button>
