@@ -221,7 +221,7 @@ export default function MainSection() {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 w-full max-w-5xl mx-auto xl:mx-0">
+        <div className="flex flex-col gap-4 w-full max-w-4xl mx-auto xl:mx-0">
           {!theatreMode && (
             <div className="relative w-full aspect-video border border-[#111] p-4 rounded transition-all duration-300">
               {embedUrl ? (
